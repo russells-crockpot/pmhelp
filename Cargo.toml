@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "pmhelp",
+    "internal",
+    "derive",
+    "derive/macros",
+]

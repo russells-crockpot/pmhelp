@@ -1,0 +1,9 @@
+[package]
+name = "pmhelp-derive-macros"
+version = "0.1.0"
+edition = "2018"
+description = "Internal macros used by `pmhelp-derive`. These should not be used directly."
+
+[dependencies.pmhelp-internal]
+path = "../../internal"
+version = "0.1.0"

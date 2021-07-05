@@ -1,0 +1,20 @@
+[package]
+name = "pmhelp"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+proc-macro2 = "1.0.27"
+quote = "1.0.9"
+syn = { version = "1.0.73", features = ["full"] }
+
+[dependencies.pmhelp-derive]
+path = "../derive"
+optional = true
+version = "0.1.0"
+
+[features]
+default = ["derive"]
+derive = ["pmhelp-derive"]

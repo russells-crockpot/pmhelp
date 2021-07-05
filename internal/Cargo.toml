@@ -1,0 +1,10 @@
+[package]
+name = "pmhelp-internal"
+version = "0.1.0"
+edition = "2018"
+description = "Internals used by `pmhelp`. This should not be used directly."
+
+[dependencies]
+proc-macro2 = "1.0.27"
+quote = "1.0.9"
+syn = { version = "1.0.73", features = ["full"] }

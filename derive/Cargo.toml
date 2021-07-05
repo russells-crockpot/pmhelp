@@ -1,0 +1,27 @@
+[package]
+name = "pmhelp-derive"
+version = "0.1.0"
+edition = "2018"
+homepage = "https://github.com/russells-crockpot/pmhelp"
+repository = "https://github.com/russells-crockpot/pmhelp"
+#documentation = "https://docs.rs/pmhelp-derive/"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.3.3"
+proc-macro2 = "1"
+quote = "1"
+
+[dependencies.syn]
+version = "1"
+features = [ "full" ]
+
+[dependencies.pmhelp-internal]
+path = "../internal"
+version = "0.1.0"
+
+[dependencies.pmhelp-derive-macros]
+path = "./macros"
+version = "0.1.0"

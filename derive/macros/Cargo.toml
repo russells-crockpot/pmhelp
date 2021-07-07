@@ -2,6 +2,7 @@
 name = "pmhelp-derive-macros"
 version = "0.0.1"
 edition = "2018"
+license = "MIT"
 description = "Internal macros used by `pmhelp-derive`. These should not be used directly."
 
 [dependencies.pmhelp-internal]

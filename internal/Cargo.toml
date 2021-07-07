@@ -2,6 +2,7 @@
 name = "pmhelp-internal"
 version = "0.0.1"
 edition = "2018"
+license = "MIT"
 description = "Internals that will be used by `pmhelp`. This should not be used directly."
 
 [dependencies]

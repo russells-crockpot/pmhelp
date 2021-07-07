@@ -2,6 +2,7 @@
 name = "pmhelp-derive"
 version = "0.0.1"
 edition = "2018"
+license = "MIT"
 homepage = "https://github.com/russells-crockpot/pmhelp"
 repository = "https://github.com/russells-crockpot/pmhelp"
 description = "Derive macros that will be used by `pmhelp`."

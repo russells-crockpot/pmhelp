@@ -2,6 +2,7 @@
 name = "pmhelp-internal-macros"
 version = "0.0.1"
 edition = "2018"
+license = "MIT"
 description = "Internal macros that will be used by `pmhelp`. This should not be used directly."
 
 [lib]

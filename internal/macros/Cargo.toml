@@ -1,0 +1,17 @@
+[package]
+name = "pmhelp-internal-macros"
+version = "0.0.1"
+edition = "2018"
+description = "Internal macros that will be used by `pmhelp`. This should not be used directly."
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = "1"
+
+[dependencies.pmhelp-internal]
+path = "../"
+version = "0.0.1"

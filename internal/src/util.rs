@@ -1,10 +1,7 @@
-use proc_macro2::{Span, TokenStream};
-use std::{convert::TryFrom, iter::Cycle, ops::RangeInclusive};
-use syn::{
-    parenthesized,
-    parse::{Parse, ParseStream, Result as ParseResult},
-    GenericParam, Generics, Lifetime, LifetimeDef, Token,
-};
+use alloc::{format, string::String, vec, vec::Vec};
+use core::{convert::TryFrom, iter::Cycle, ops::RangeInclusive};
+use proc_macro2::Span;
+use syn::{GenericParam, Generics, Lifetime, LifetimeDef};
 
 pub struct LifetimeGenerator(Vec<(char, Cycle<RangeInclusive<char>>)>);
 

@@ -1,0 +1,22 @@
+[package]
+name = "pmhelp-seqparse"
+version = "0.0.1"
+edition = "2018"
+description = "Pmhelp's SeqParse derive. Put in it's own crate so it can be used by pmhelp-derive."
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.3"
+proc-macro2 = "1"
+quote = "1"
+bitflags = "1"
+
+[dependencies.syn]
+version = "1"
+features = ["full"]
+
+[dependencies.pmhelp-internal]
+path = "../internal"
+version = "0.0.1"

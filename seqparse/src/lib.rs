@@ -2,9 +2,6 @@
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
 
-//#[macro_use]
-//extern crate here;
-
 #[macro_use]
 extern crate bitflags;
 
@@ -13,18 +10,12 @@ extern crate pmhelp_internal;
 
 extern crate pmhelp_internal as pmhelp;
 
-#[macro_use]
-extern crate pmhelp_internal_macros;
-
-#[macro_use]
-extern crate pmhelp_derive_macros;
+//mod expanded;
 
 mod attr;
-mod derive;
-mod shared;
-mod util;
+mod base;
 
-#[proc_macro_derive(Attribute, attributes(pmhelp))]
+#[proc_macro_derive(SeqParse, attributes(parse, consume))]
 pub fn attribute(stream: TokenStream) -> TokenStream {
-    TokenStream::from(derive::attr::derive_attribute(parse_macro_input!(stream)).unwrap())
+    TokenStream::from(base::derive_seqparse(parse_macro_input!(stream)).unwrap())
 }

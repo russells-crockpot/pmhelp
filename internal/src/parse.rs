@@ -1,10 +1,6 @@
-use proc_macro2::{Span, TokenStream};
-use std::{convert::TryFrom, iter::Cycle, ops::RangeInclusive};
 use syn::{
     parenthesized,
     parse::{Parse, ParseStream, Result as ParseResult},
-    punctuated::Punctuated,
-    GenericParam, Generics, Lifetime, LifetimeDef, Token,
 };
 
 struct Parenthesized<V: Parse>(V);
@@ -16,30 +12,72 @@ impl<V: Parse> Parse for Parenthesized<V> {
     }
 }
 
-struct CommaDelim<P: Parse>(Punctuated<P, Token![,]>);
-impl<P: Parse> Parse for CommaDelim<P> {
-    fn parse(stream: ParseStream) -> ParseResult<Self> {
-        let parser = Punctuated::<P, Token![,]>::parse_separated_nonempty;
-        Ok(Self(parser(stream)?))
+/// Functions to parse `proc_macro2::TokenStream`s.
+pub mod token_stream {
+    use super::Parenthesized;
+    use proc_macro2::TokenStream;
+    use syn::{
+        parse::{Parse, Parser, Result as ParseResult},
+        punctuated::Punctuated,
+        token::Token,
+    };
+
+    #[inline]
+    pub fn parenthesized<V: Parse>(stream: TokenStream) -> ParseResult<V> {
+        syn::parse2::<Parenthesized<V>>(stream).map(|v| v.0)
+    }
+
+    #[inline]
+    pub fn separated<P, T>(stream: TokenStream) -> ParseResult<Punctuated<P, T>>
+    where
+        P: Parse,
+        T: Parse + Token,
+    {
+        Parser::parse2(Punctuated::<P, T>::parse_separated_nonempty, stream)
+    }
+
+    macro_rules! make_seperated_func {
+        ($name:ident, $token:path) => {
+            #[inline]
+            pub fn $name<P: Parse>(stream: TokenStream) -> ParseResult<Punctuated<P, $token>> {
+                separated::<P, $token>(stream)
+            }
+        };
+    }
+
+    make_seperated_func! {
+        comma_separated, ::syn::token::Comma
     }
 }
 
-#[inline]
-pub fn parenthesized<V: Parse>(stream: TokenStream) -> ParseResult<V> {
-    syn::parse2::<Parenthesized<V>>(stream).map(|v| v.0)
-}
+/// Functions to parse `syn::parse::ParseStream`s.
+pub mod parse_stream {
+    use super::Parenthesized;
+    use syn::{
+        parse::{Parse, ParseStream, Result as ParseResult},
+        punctuated::Punctuated,
+    };
 
-#[inline]
-pub fn parenthesized2<V: Parse>(stream: ParseStream) -> ParseResult<V> {
-    stream.parse::<Parenthesized<V>>().map(|v| v.0)
-}
+    #[inline]
+    pub fn parenthesized<V: Parse>(stream: ParseStream) -> ParseResult<V> {
+        stream.parse::<Parenthesized<V>>().map(|v| v.0)
+    }
 
-#[inline]
-pub fn separated<P: Parse, T: Parse>(stream: ParseStream) -> ParseResult<Punctuated<P, T>> {
-    <Punctuated<P, T>>::parse_terminated(stream)
-}
+    #[inline]
+    pub fn separated<P: Parse, T: Parse>(stream: ParseStream) -> ParseResult<Punctuated<P, T>> {
+        <Punctuated<P, T>>::parse_terminated(stream)
+    }
 
-#[inline]
-pub fn comma_separated<P: Parse>(stream: ParseStream) -> ParseResult<Punctuated<P, Token![,]>> {
-    separated::<P, Token![,]>(stream)
+    macro_rules! make_seperated_func {
+        ($name:ident, $token:path) => {
+            #[inline]
+            pub fn $name<P: Parse>(stream: ParseStream) -> ParseResult<Punctuated<P, $token>> {
+                separated::<P, $token>(stream)
+            }
+        };
+    }
+
+    make_seperated_func! {
+        comma_separated, ::syn::token::Comma
+    }
 }

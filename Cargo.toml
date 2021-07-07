@@ -2,6 +2,8 @@
 members = [
     "pmhelp",
     "internal",
+    "internal/macros",
     "derive",
     "derive/macros",
+    "seqparse",
 ]

@@ -22,4 +22,5 @@ t[0-9].*
 /flamegraph.svg
 /perf.data
 .env
-*.extracted
+expanded.rs
+to_expand.rs

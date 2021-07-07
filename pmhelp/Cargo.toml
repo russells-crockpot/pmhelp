@@ -1,20 +1,29 @@
 [package]
 name = "pmhelp"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2018"
+license = "MIT"
+description = "A WIP library to assist in the creation of procedural macros."
+homepage = "https://github.com/russells-crockpot/pmhelp"
+repository = "https://github.com/russells-crockpot/pmhelp"
+documentation = "https://docs.rs/pmhelp/"
+keywords = ["macros", "procedural-macros"]
+categories = ["rust-patterns", "no-std", "development-tools::procedural-macro-helpers"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-proc-macro2 = "1.0.27"
-quote = "1.0.9"
-syn = { version = "1.0.73", features = ["full"] }
+proc-macro2 = "1"
+quote = "1"
+syn = "1"
 
-[dependencies.pmhelp-derive]
-path = "../derive"
-optional = true
-version = "0.1.0"
+#[dependencies.pmhelp-derive]
+#path = "../derive"
+#optional = true
+#version = "0.0.1"
 
-[features]
-default = ["derive"]
-derive = ["pmhelp-derive"]
+#[features]
+#default = ["derive"]
+#derive = ["pmhelp-derive"]

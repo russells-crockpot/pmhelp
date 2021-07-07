@@ -1,4 +1,5 @@
-#![allow(unused_variables, unused_macros, unused_imports, dead_code, unused_mut)]
+#![no_std]
+extern crate alloc;
 
 #[path = "../../internal/src/macros.rs"]
 mod macros;
@@ -8,6 +9,6 @@ mod base;
 #[doc(inline)]
 pub use base::*;
 
-#[cfg(feature = "derive")]
-#[doc(inline)]
-pub use pmhelp_derive::*;
+//#[cfg(feature = "derive")]
+//#[doc(inline)]
+//pub use pmhelp_derive::*;

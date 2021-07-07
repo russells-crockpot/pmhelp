@@ -13,12 +13,6 @@ extern crate pmhelp_internal;
 
 extern crate pmhelp_internal as pmhelp;
 
-#[macro_use]
-extern crate pmhelp_internal_macros;
-
-#[macro_use]
-extern crate pmhelp_derive_macros;
-
 mod attr;
 mod derive;
 mod shared;

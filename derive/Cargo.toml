@@ -25,7 +25,3 @@ version = "0.0.1"
 [dependencies.pmhelp-internal-macros]
 path = "../internal/macros"
 version = "0.0.1"
-
-[dependencies.pmhelp-derive-macros]
-path = "./macros"
-version = "0.0.1"

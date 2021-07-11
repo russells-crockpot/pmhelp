@@ -3,7 +3,7 @@ members = []
 
 [package]
 name = "pmhelp-derive"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 license = "MIT"
 homepage = "https://github.com/russells-crockpot/pmhelp"
@@ -23,8 +23,8 @@ syn = "1"
 
 [dependencies.pmhelp-internal]
 path = "../internal"
-version = "0.0.1"
+version = "0.0.2"
 
 [dependencies.pmhelp-internal-macros]
 path = "../internal/macros"
-version = "0.0.1"
+version = "0.0.2"

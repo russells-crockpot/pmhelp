@@ -1,6 +1,6 @@
 [package]
 name = "pmhelp-internal-macros"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 license = "MIT"
 description = "Internal macros that will be used by `pmhelp`. This should not be used directly."
@@ -15,4 +15,4 @@ syn = "1"
 
 [dependencies.pmhelp-internal]
 path = "../"
-version = "0.0.1"
+version = "0.0.2"

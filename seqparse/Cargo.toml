@@ -3,7 +3,7 @@ members = []
 
 [package]
 name = "pmhelp-seqparse"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 license = "MIT"
 description = "Pmhelp's SeqParse derive. Put in it's own crate so it can be used by pmhelp-derive."
@@ -23,4 +23,4 @@ features = ["full"]
 
 [dependencies.pmhelp-internal]
 path = "../internal"
-version = "0.0.1"
+version = "0.0.2"

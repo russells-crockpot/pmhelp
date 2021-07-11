@@ -1,6 +1,6 @@
 [package]
 name = "pmhelp"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2018"
 license = "MIT"
 description = "A WIP library to assist in the creation of procedural macros."
@@ -21,12 +21,12 @@ syn = "1"
 
 [dependencies.pmhelp-internal]
 path = "../internal"
-version = "0.0.1"
+version = "0.0.2"
 
 #[dependencies.pmhelp-derive]
 #path = "../derive"
 #optional = true
-#version = "0.0.1"
+#version = "0.0.2"
 
 #[features]
 #default = ["derive"]

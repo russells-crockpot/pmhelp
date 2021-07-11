@@ -1,9 +1,7 @@
 #![no_std]
-extern crate alloc;
 
-mod internal;
 #[doc(inline)]
-pub use internal::*;
+pub use pmhelp_internal::*;
 
 //#[cfg(feature = "derive")]
 //#[doc(inline)]

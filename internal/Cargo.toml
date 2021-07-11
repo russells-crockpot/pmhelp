@@ -6,6 +6,10 @@ license = "MIT"
 description = "Internals that will be used by `pmhelp`. This should not be used directly."
 
 [dependencies]
+paste = "1"
 proc-macro2 = "1"
 quote = "1"
 syn = "1"
+
+[features]
+from-base = []

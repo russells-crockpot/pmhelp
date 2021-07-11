@@ -1,11 +1,16 @@
-use alloc::{format, string::String, vec, vec::Vec};
+use alloc::{
+    format,
+    string::{String, ToString},
+    vec,
+    vec::Vec,
+};
 use core::{convert::TryFrom, iter::Cycle, ops::RangeInclusive};
 use proc_macro2::Span;
-use syn::{GenericParam, Generics, Lifetime, LifetimeDef};
+use syn::{parse_quote, GenericParam, Generics, Ident, Lifetime, LifetimeDef, TypeParam};
 
-pub struct LifetimeGenerator(Vec<(char, Cycle<RangeInclusive<char>>)>);
+pub struct LetterGenerator(Vec<(char, Cycle<RangeInclusive<char>>)>);
 
-impl LifetimeGenerator {
+impl LetterGenerator {
     fn new() -> Self {
         Self(vec![Self::new_item()])
     }
@@ -34,19 +39,66 @@ impl LifetimeGenerator {
     }
 }
 
-impl Iterator for LifetimeGenerator {
+impl Iterator for LetterGenerator {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
         let rval = self.get_current_string();
         self.inc_combo(self.0.len() - 1);
-        Some(format!("'{}", rval))
+        Some(rval)
     }
 }
 
-impl Default for LifetimeGenerator {
+impl Default for LetterGenerator {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+pub fn create_new_type_generics<const N: usize>(base: &Generics) -> ([Ident; N], Generics) {
+    let mut seen = Vec::new();
+    let mut insert_at = None;
+    for (i, param) in base.params.iter().enumerate() {
+        match &param {
+            GenericParam::Lifetime(_) => continue,
+            GenericParam::Type(TypeParam { ident, .. }) => {
+                if insert_at.is_none() {
+                    insert_at = Some(i)
+                }
+                seen.push(ident.to_string())
+            }
+            _ => {
+                if insert_at.is_none() {
+                    insert_at = Some(i)
+                }
+                break;
+            }
+        }
+    }
+    let mut new_types = Vec::with_capacity(N);
+    let mut type_gen = LetterGenerator::new().map(|l| format!("'{}", l));
+    while new_types.len() < N {
+        let name = type_gen.next().unwrap();
+        if !seen.contains(&name) {
+            let ty: TypeParam = parse_quote! { #name };
+            new_types.push(ty);
+        }
+    }
+    let insert_at = insert_at.unwrap_or(0);
+    let mut generics = base.clone();
+    for ty in new_types.iter() {
+        generics
+            .params
+            .insert(insert_at, GenericParam::Type(ty.clone()));
+    }
+    let type_idents = new_types
+        .into_iter()
+        .map(|tp| tp.ident)
+        .collect::<Vec<Ident>>();
+    if let Ok(ty) = <[Ident; N]>::try_from(type_idents) {
+        (ty, generics)
+    } else {
+        unreachable!()
     }
 }
 
@@ -59,15 +111,15 @@ pub fn create_new_lifetimes<const N: usize>(base: &Generics) -> ([Lifetime; N], 
     let mut seen_lifetimes = Vec::new();
     let mut insert_at = 0;
     for (i, param) in base.params.iter().enumerate() {
-        if let GenericParam::Lifetime(ref lifetime) = param {
-            seen_lifetimes.push(format!("{}", lifetime.lifetime.ident));
+        if let GenericParam::Lifetime(lifetime) = &param {
+            seen_lifetimes.push(lifetime.lifetime.ident.to_string());
         } else {
             insert_at = i;
             break;
         }
     }
     let mut new_lifetimes = Vec::with_capacity(N);
-    let mut lifetime_gen = LifetimeGenerator::new();
+    let mut lifetime_gen = LetterGenerator::new().map(|l| format!("'{}", l));
     while new_lifetimes.len() < N {
         let lf_name = lifetime_gen.next().unwrap();
         if !seen_lifetimes.contains(&lf_name) {
@@ -80,12 +132,11 @@ pub fn create_new_lifetimes<const N: usize>(base: &Generics) -> ([Lifetime; N], 
         let param = GenericParam::Lifetime(LifetimeDef::new(lf.clone()));
         generics.params.insert(insert_at, param);
     }
-    let new_lifetimes = if let Ok(a) = <[Lifetime; N]>::try_from(new_lifetimes) {
-        a
+    if let Ok(lifetimes) = <[Lifetime; N]>::try_from(new_lifetimes) {
+        (lifetimes, generics)
     } else {
-        unreachable!();
-    };
-    (new_lifetimes, generics)
+        unreachable!()
+    }
 }
 
 #[cfg(test)]
@@ -94,7 +145,7 @@ mod test {
 
     #[test]
     fn test_lifetime_generator() {
-        let mut gen = LifetimeGenerator::new();
+        let mut gen = LetterGenerator::new();
         for c in 'a'..='z' {
             assert_eq!(gen.next().unwrap(), format!("'{}", c));
         }
